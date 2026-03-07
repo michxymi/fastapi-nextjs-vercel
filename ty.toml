@@ -1,0 +1,2 @@
+[environment]
+python = "./api/.venv/bin/python"
