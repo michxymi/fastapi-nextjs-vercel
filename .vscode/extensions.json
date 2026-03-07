@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "astral-sh.ty",
+    "biomejs.biome",
+    "tamasfe.even-better-toml",
+    "ms-python.python",
+    "ms-python.debugpy",
+    "ms-python.vscode-python-envs",
+    "charliermarsh.ruff",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
