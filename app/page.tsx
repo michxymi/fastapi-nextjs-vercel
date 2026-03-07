@@ -4,6 +4,7 @@ const DEMO_TOKEN = "test-token";
 
 async function getItems() {
   const requestHeaders = await headers();
+  const cookie = requestHeaders.get("cookie");
   const host =
     requestHeaders.get("x-forwarded-host") ??
     requestHeaders.get("host") ??
@@ -12,15 +13,16 @@ async function getItems() {
     requestHeaders.get("x-forwarded-proto") ??
     (host.includes("localhost") ? "http" : "https");
 
-  const response = await fetch(`${protocol}://${host}/items/`, {
+  const response = await fetch(`${protocol}://${host}/api/items/`, {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${DEMO_TOKEN}`,
+      ...(cookie ? { cookie } : {}),
     },
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch /items/: ${response.status}`);
+    throw new Error(`Failed to fetch /api/items/: ${response.status}`);
   }
 
   return response.json();
@@ -36,12 +38,12 @@ export default async function Home() {
           FastAPI items example
         </h1>
         <p className="mt-3 text-zinc-600 leading-7">
-          This page fetches <code>/items/</code> on the server and renders the
-          JSON response below.
+          This page fetches <code>/api/items/</code> on the server and renders
+          the JSON response below.
         </p>
 
         <div className="mt-6 rounded-xl bg-zinc-950 p-4 text-sm text-zinc-100">
-          <p className="text-zinc-400">GET /items/</p>
+          <p className="text-zinc-400">GET /api/items/</p>
           <pre className="mt-3 overflow-x-auto">
             <code>{JSON.stringify(items, null, 2)}</code>
           </pre>
