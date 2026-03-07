@@ -24,3 +24,11 @@ repos:
       entry: uv run ty check .
       language: system
       pass_filenames: false
+- repo: local
+  hooks:
+    - id: ultracite
+      name: ultracite
+      entry: pnpm exec ultracite fix
+      language: system
+      types_or: [javascript, jsx, ts, tsx, json, css]
+      pass_filenames: false
