@@ -1,7 +1,27 @@
+import { headers } from "next/headers";
+
 const DEMO_TOKEN = "test-token";
+const ITEMS_PATH = "/api/v1/items/";
+
+async function getBaseUrl() {
+  const requestHeaders = await headers();
+  const host =
+    requestHeaders.get("x-forwarded-host") ??
+    requestHeaders.get("host") ??
+    process.env.VERCEL_URL ??
+    "127.0.0.1:3000";
+  const protocol =
+    requestHeaders.get("x-forwarded-proto") ??
+    (host.startsWith("127.0.0.1") || host.startsWith("localhost")
+      ? "http"
+      : "https");
+
+  return `${protocol}://${host}`;
+}
 
 async function getItems() {
-  const response = await fetch("/api/v1/items", {
+  const baseUrl = await getBaseUrl();
+  const response = await fetch(new URL(ITEMS_PATH, baseUrl), {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${DEMO_TOKEN}`,
@@ -9,7 +29,7 @@ async function getItems() {
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch /api/v1/items/: ${response.status}`);
+    throw new Error(`Failed to fetch ${ITEMS_PATH}: ${response.status}`);
   }
 
   return response.json();
@@ -25,12 +45,12 @@ export default async function Home() {
           FastAPI items example
         </h1>
         <p className="mt-3 text-zinc-600 leading-7">
-          This page fetches <code>/api/items/</code> on the server and renders
+          This page fetches <code>{ITEMS_PATH}</code> on the server and renders
           the JSON response below.
         </p>
 
         <div className="mt-6 rounded-xl bg-zinc-950 p-4 text-sm text-zinc-100">
-          <p className="text-zinc-400">GET /api/items/</p>
+          <p className="text-zinc-400">GET {ITEMS_PATH}</p>
           <pre className="mt-3 overflow-x-auto">
             <code>{JSON.stringify(items, null, 2)}</code>
           </pre>
