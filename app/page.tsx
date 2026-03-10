@@ -19,9 +19,12 @@ async function getBaseUrl() {
 }
 
 async function getItems() {
+  const requestHeaders = await headers();
   const baseUrl = await getBaseUrl();
+  const cookie = requestHeaders.get("cookie");
   const response = await fetch(new URL(ITEMS_PATH, baseUrl), {
     cache: "no-store",
+    headers: cookie ? { cookie } : undefined,
   });
 
   if (!response.ok) {
