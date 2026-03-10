@@ -16,7 +16,8 @@
     "typecheck:fastapi": "uv run --project api ty check api",
     "fix": "pnpm fix:next && pnpm fix:fastapi",
     "fix:next": "ultracite fix",
-    "fix:fastapi": "uv run --project api ruff check --fix api"
+    "fix:fastapi": "uv run --project api ruff check --fix api",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
     "next": "16.1.6",
@@ -31,6 +32,7 @@
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "concurrently": "^9.2.1",
+    "conventional-changelog-angular": "^8.3.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "ultracite": "7.2.5"
