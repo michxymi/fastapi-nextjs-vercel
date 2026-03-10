@@ -7,7 +7,13 @@ requires-python = ">=3.12"
 dependencies = ["fastapi[standard]>=0.135.1"]
 
 [project.optional-dependencies]
-dev = ["pytest>=9.0.2", "ruff>=0.15.5", "ty>=0.0.21", "pre-commit>=4.5.1"]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.15.5",
+    "ty>=0.0.21",
+    "pre-commit>=4.5.1",
+]
 
 [project.scripts]
 app = "main:app"

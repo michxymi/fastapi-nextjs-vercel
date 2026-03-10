@@ -8,6 +8,6 @@
     "ms-python.vscode-python-envs",
     "charliermarsh.ruff",
     "bradlc.vscode-tailwindcss",
-    "vitest.explorer"
+    "github.vscode-github-actions"
   ]
 }

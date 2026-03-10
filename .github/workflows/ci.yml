@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install API dependencies
+        run: uv sync --project api --extra dev --locked
+
+      - name: Run ultracite
+        run: pnpm check:next
+
+      - name: Run Ruff
+        run: pnpm check:fastapi
+
+      - name: Run TypeScript type checks
+        run: pnpm typecheck:next
+
+      - name: Run ty
+        run: pnpm typecheck:fastapi
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: checks
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install API dependencies
+        run: uv sync --project api --extra dev --locked
+
+      - name: Run Vitest with coverage
+        run: pnpm exec vitest run --coverage
+
+      - name: Run Pytest with coverage
+        run: uv run --project api --extra dev pytest --cov=api --cov-report=term-missing --cov-report=xml:api-coverage.xml
+
+      - name: Upload Vitest coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextjs-coverage
+          path: coverage
+          if-no-files-found: error
+
+      - name: Upload Pytest coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastapi-coverage
+          path: api-coverage.xml
+          if-no-files-found: error
