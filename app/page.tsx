@@ -1,6 +1,5 @@
 import { headers } from "next/headers";
 
-const DEMO_TOKEN = "test-token";
 const ITEMS_PATH = "/api/v1/items/";
 
 async function getBaseUrl() {
@@ -23,9 +22,6 @@ async function getItems() {
   const baseUrl = await getBaseUrl();
   const response = await fetch(new URL(ITEMS_PATH, baseUrl), {
     cache: "no-store",
-    headers: {
-      Authorization: `Bearer ${DEMO_TOKEN}`,
-    },
   });
 
   if (!response.ok) {
