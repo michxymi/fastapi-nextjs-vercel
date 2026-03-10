@@ -1,7 +1,7 @@
 const DEMO_TOKEN = "test-token";
 
 async function getItems() {
-  const response = await fetch("/api/items", {
+  const response = await fetch("/api/v1/items", {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${DEMO_TOKEN}`,
@@ -9,7 +9,7 @@ async function getItems() {
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch /api/items/: ${response.status}`);
+    throw new Error(`Failed to fetch /api/v1/items/: ${response.status}`);
   }
 
   return response.json();
