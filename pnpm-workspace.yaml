@@ -1,3 +1,8 @@
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
+minimumReleaseAge: 10080 # 7 days
+# Prevents installation of a package if its trust level has decreased compared to previous releases
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  - chokidar@4.0.3 # https://github.com/paulmillr/chokidar/issues/1440
+  - semver@6.3.1 # Trust downgrade false positive - required by transitive dependencies
+# pnpm will not install any package that claims to not be compatible with the current Node version
+engineStrict: true
