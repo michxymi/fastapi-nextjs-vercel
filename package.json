@@ -3,11 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -k -s first \"pnpm dev:next\" \"pnpm dev:fastapi\"",
+    "dev:next": "next dev",
+    "dev:fastapi": "uv run --project api fastapi dev api/main.py",
     "build": "next build",
     "start": "next start",
-    "check": "ultracite check",
-    "fix": "ultracite fix"
+    "check": "pnpm check:next && pnpm check:fastapi",
+    "check:next": "ultracite check",
+    "check:fastapi": "uv run --project api ruff check api",
+    "typecheck": "pnpm typecheck:next && pnpm typecheck:fastapi",
+    "typecheck:next": "tsc --noEmit",
+    "typecheck:fastapi": "uv run --project api ty check api",
+    "fix": "pnpm fix:next && pnpm fix:fastapi",
+    "fix:next": "ultracite fix",
+    "fix:fastapi": "uv run --project api ruff check --fix api"
   },
   "dependencies": {
     "next": "16.1.6",
@@ -21,6 +30,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "concurrently": "^9.2.1",
     "tailwindcss": "^4",
     "typescript": "^5",
     "ultracite": "7.2.5"
