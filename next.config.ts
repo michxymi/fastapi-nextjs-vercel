@@ -17,14 +17,14 @@ const nextConfig: NextConfig = {
         destination:
           process.env.NODE_ENV === "development"
             ? "http://127.0.0.1:8000/docs"
-            : "/api/docs",
+            : "/api/main",
       },
       {
         source: "/openapi.json",
         destination:
           process.env.NODE_ENV === "development"
             ? "http://127.0.0.1:8000/openapi.json"
-            : "/api/openapi.json",
+            : "/api/main",
       },
     ];
   },
