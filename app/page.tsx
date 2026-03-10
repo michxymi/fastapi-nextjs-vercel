@@ -1,23 +1,10 @@
-import { headers } from "next/headers";
-
 const DEMO_TOKEN = "test-token";
 
 async function getItems() {
-  const requestHeaders = await headers();
-  const cookie = requestHeaders.get("cookie");
-  const host =
-    requestHeaders.get("x-forwarded-host") ??
-    requestHeaders.get("host") ??
-    "localhost:3000";
-  const protocol =
-    requestHeaders.get("x-forwarded-proto") ??
-    (host.includes("localhost") ? "http" : "https");
-
-  const response = await fetch(`${protocol}://${host}/api/items/`, {
+  const response = await fetch("/api/items", {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${DEMO_TOKEN}`,
-      ...(cookie ? { cookie } : {}),
     },
   });
 
