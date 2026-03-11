@@ -21,9 +21,9 @@ repos:
   hooks:
     - id: ty
       name: ty check
-      entry: uv run --project api ty check .
+      entry: uv run --project api ty check
       language: system
-      pass_filenames: false
+      files: ^api/.*\.py$
 - repo: local
   hooks:
     - id: ultracite
