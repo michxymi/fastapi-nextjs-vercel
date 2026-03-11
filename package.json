@@ -19,6 +19,7 @@
     "fix:next": "ultracite fix",
     "fix:fastapi": "uv run --project api --extra dev ruff check --fix api",
     "test:next": "vitest run",
+    "test:fastapi": "uv run --project api --extra dev pytest",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
