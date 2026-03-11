@@ -49,6 +49,8 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "editor.codeActionsOnSave": {
+    "source.fixAll.ruff": "explicit",
+    "source.organizeImports.ruff": "explicit",
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   }
