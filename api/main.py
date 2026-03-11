@@ -1,13 +1,9 @@
-from typing import Annotated
+from fastapi import APIRouter, FastAPI
 
-from fastapi import Depends, FastAPI
-from fastapi.security import OAuth2PasswordBearer
+from api.routes import users
 
 app = FastAPI()
+api_router = APIRouter(prefix="/api/v1")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-@app.get("/api/v1/items")
-async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
-    return {"token": token}
+api_router.include_router(users.router)
+app.include_router(api_router)

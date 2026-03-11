@@ -23,9 +23,14 @@ describe("app/page", () => {
     vi.clearAllMocks();
   });
 
-  it("renders the fetched items and forwards request cookies", async () => {
+  it("renders the current user and forwards auth and request cookies", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
-      json: async () => [{ id: 1, name: "Test item" }],
+      json: async () => ({
+        disabled: null,
+        email: "john@example.com",
+        full_name: "John Doe",
+        username: "demo-token-123fakedecoded",
+      }),
       ok: true,
     });
 
@@ -35,14 +40,20 @@ describe("app/page", () => {
     const html = renderToStaticMarkup(page);
 
     expect(fetchMock).toHaveBeenCalledWith(
-      new URL("/api/v1/items/", "https://example.com"),
+      new URL("/api/v1/users/me", "https://example.com"),
       {
         cache: "no-store",
-        headers: { cookie: "session=abc123" },
+        headers: {
+          authorization: "Bearer demo-token-123",
+          cookie: "session=abc123",
+        },
       }
     );
-    expect(html).toContain("FastAPI items example");
-    expect(html).toContain("GET /api/v1/items/");
-    expect(html).toContain("Test item");
+    expect(html).toContain("Current user");
+    expect(html).toContain("Signed in as");
+    expect(html).toContain("John Doe");
+    expect(html).toContain("john@example.com");
+    expect(html).toContain("demo-token-123fakedecoded");
+    expect(html).toContain("GET /api/v1/users/me");
   });
 });
